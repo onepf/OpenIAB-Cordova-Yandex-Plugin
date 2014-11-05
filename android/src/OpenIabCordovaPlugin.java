@@ -102,7 +102,7 @@ public class OpenIabCordovaPlugin extends CordovaPlugin
         else if ("getSkuListDetails".equals(action))
         {
             List<String> skuList = new ArrayList<String>();
-            if (args.length() > 1) {
+            if (args.length() > 0) {
                 JSONArray jSkuList = args.getJSONArray(0);
                 int count = jSkuList.length();
                 for (int i = 0; i < count; ++i) {
@@ -143,10 +143,14 @@ public class OpenIabCordovaPlugin extends CordovaPlugin
                 JSONObject jsonSkuDetails;
                 try {
                     jsonSkuDetails = Serialization.skuDetailsToJson(_inventory.getSkuDetails(sku));    
+                    jsonSkuDetailsList.put(jsonSkuDetails);
                 } catch (JSONException e) {
                     callbackContext.error(Serialization.errorToJson(-1, "Couldn't serialize SkuDetails: " + sku));
                     return;
                 }
+            }
+            else {
+                Log.d(TAG, "SKU NOT FOUND: " + sku);
             }
         }
         callbackContext.success(jsonSkuDetailsList);
