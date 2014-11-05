@@ -99,6 +99,19 @@ public class OpenIabCordovaPlugin extends CordovaPlugin
             getSkuDetails(sku, callbackContext);
             return true;
         }
+        else if ("getSkuListDetails".equals(action))
+        {
+            List<String> skuList = new ArrayList<String>();
+            if (args.length() > 1) {
+                JSONArray jSkuList = args.getJSONArray(0);
+                int count = jSkuList.length();
+                for (int i = 0; i < count; ++i) {
+                    skuList.add(jSkuList.getString(i));
+                }
+            }       
+            getSkuListDetails(skuList, callbackContext);
+            return true;
+        }
 
         return false;  // Returning false results in a "MethodNotFound" error.
     }
