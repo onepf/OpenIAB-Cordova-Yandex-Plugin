@@ -120,6 +120,24 @@ public class OpenIabCordovaPlugin extends CordovaPlugin
         }
         callbackContext.success(jsonSkuDetails);
     }
+    
+    private void getSkuListDetails(List<String> skuList, final CallbackContext callbackContext) {
+        if (!checkInitialized(callbackContext)) return;
+
+        JSONArray jsonSkuDetailsList = new JSONArray();
+        for (String sku : skuList) {
+            if (_inventory.hasDetails(sku)) {
+                JSONObject jsonSkuDetails;
+                try {
+                    jsonSkuDetails = Serialization.skuDetailsToJson(_inventory.getSkuDetails(sku));    
+                } catch (JSONException e) {
+                    callbackContext.error(Serialization.errorToJson(-1, "Couldn't serialize SkuDetails: " + sku));
+                    return;
+                }
+            }
+        }
+        callbackContext.success(jsonSkuDetailsList);
+    }
 
     private void init(final OpenIabHelper.Options options, final List<String> skuList, final CallbackContext callbackContext) {
         cordova.getActivity().runOnUiThread(new Runnable() {
