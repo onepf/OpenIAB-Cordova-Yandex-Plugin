@@ -29,7 +29,6 @@ public class Serialization {
         j.put("token", purchase.getToken());
         j.put("originalJson", purchase.getOriginalJson());
         j.put("signature", purchase.getSignature());
-        j.put("appstoreName", purchase.getAppstoreName());
         return j;
     }
 

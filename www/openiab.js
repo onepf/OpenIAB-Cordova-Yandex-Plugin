@@ -38,7 +38,6 @@ function OpenIAB()
         token:null,
         originalJson:null,
         signature:null,
-        appstoreName:null
 	}
 
 	this.skuDetails =
