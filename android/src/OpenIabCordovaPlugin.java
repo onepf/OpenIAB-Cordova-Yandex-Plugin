@@ -112,10 +112,34 @@ public class OpenIabCordovaPlugin extends CordovaPlugin
             getSkuListDetails(skuList, callbackContext);
             return true;
         }
+        else if ("getPurchases".equals(action))
+        {
+            getPurchases(callbackContext);
+            return true;
+        }
 
         return false;  // Returning false results in a "MethodNotFound" error.
     }
 
+    private void getPurchases(final CallbackContext callbackContext) {
+        if (!checkInitialized(callbackContext)) return;
+        
+        List<Purchase> purchaseList = _inventory.getAllPurchases();
+        
+        JSONArray jsonPurchaseList = new JSONArray();
+        for (Purchase p : purchaseList) {
+            JSONObject jsonPurchase;
+            try {
+                jsonPurchase = Serialization.purchaseToJson(p);
+                jsonPurchaseList.put(jsonPurchase);
+            } catch (JSONException e) {
+                callbackContext.error(Serialization.errorToJson(-1, "Couldn't serialize Purchase: " + p.getSku()));
+                return;
+            }
+        }
+        callbackContext.success(jsonPurchaseList);
+    }
+    
     private void getSkuDetails(String sku, final CallbackContext callbackContext) {
         if (!checkInitialized(callbackContext)) return;
 
